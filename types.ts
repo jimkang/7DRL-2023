@@ -61,6 +61,7 @@ export interface SoulBase {
   vertices: Pt[];
   verticesBox: Box;
   svgScale?: number;
+  layer: string;
 }
 
 export interface SoulDef extends SoulBase {

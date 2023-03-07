@@ -3,7 +3,6 @@ import accessor from 'accessor';
 import { select } from 'd3-selection';
 import { zoom as Zoom } from 'd3-zoom';
 
-var depictionRoot = select('#bone-root');
 var diagnosticsRoot = select('#diagnostics-root');
 var board = select('#canvas');
 var zoomLayer = board.select('#zoom-layer');
@@ -14,7 +13,8 @@ function zoomed(zoomEvent) {
   zoomLayer.attr('transform', zoomEvent.transform);
 }
 
-export function renderBones({ souls, showBodyBounds }) {
+export function renderBones({ souls, showBodyBounds, depictionRootSelector }) {
+  var depictionRoot = select(depictionRootSelector);
   //console.log(bodies.map((body) => body.vertices));
   if (showBodyBounds) {
     renderBounds({ bodies: souls.map((soul) => soul.body) });

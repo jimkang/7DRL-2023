@@ -27,10 +27,7 @@ var routeState;
   routeState.routeFromHash();
 })();
 
-async function followRoute({
-  seed,
-  showBodyBounds = false,
-}) {
+async function followRoute({ seed, showBodyBounds = false }) {
   if (!seed) {
     routeState.addToRoute({ seed: randomId(8) });
     return;
@@ -47,9 +44,9 @@ async function followRoute({
     let initialSoulSpots: SoulSpot[] = await createSoulsInSpots(exampleBGMap);
     console.log('Initial soul spots', initialSoulSpots);
     // It's not a good idea to hold onto initialSoulSpots because the souls
-    // will move to other positions. Check soul.body for current posiions. 
-    addSouls({ soulSpots: initialSoulSpots })
-    souls = initialSoulSpots.map(spot => spot.soul);
+    // will move to other positions. Check soul.body for current posiions.
+    addSouls({ soulSpots: initialSoulSpots });
+    souls = initialSoulSpots.map((spot) => spot.soul);
   } catch (error) {
     handleError(error);
   }
@@ -63,11 +60,16 @@ async function followRoute({
 
   function loop() {
     updatePositions();
-    renderBones({
-      souls,
-      showBodyBounds,
-    });
+    ['bg', 'guys'].forEach(renderSoulsOnLayer);
     requestAnimationFrame(loop);
+  }
+
+  function renderSoulsOnLayer(layer) {
+    renderBones({
+      souls: souls.filter((soul) => soul.layer === layer),
+      showBodyBounds,
+      depictionRootSelector: `#${layer}-root`,
+    });
   }
 
   // Do we actually need to keep track of all of the bones we added?
