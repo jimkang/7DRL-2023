@@ -8,8 +8,9 @@ import RandomId from '@jimkang/randomid';
 import { renderBones } from './renderers/render-bones';
 import { UpdatePositions } from './updaters/update-positions';
 import { SoulMaker } from './souls';
-import { Soul, SoulSpot } from './types';
+import { Soul, SoulSpot, SoulDefMap } from './types';
 import { exampleBGMap } from './defs/maps/example-bg-map';
+import { exampleGuysMap } from './defs/maps/example-guys-map';
 
 var randomId = RandomId();
 var routeState;
@@ -41,12 +42,8 @@ async function followRoute({ seed, showBodyBounds = false }) {
   var souls: Soul[] = [];
 
   try {
-    let initialSoulSpots: SoulSpot[] = await createSoulsInSpots(exampleBGMap);
-    console.log('Initial soul spots', initialSoulSpots);
-    // It's not a good idea to hold onto initialSoulSpots because the souls
-    // will move to other positions. Check soul.body for current posiions.
-    addSouls({ soulSpots: initialSoulSpots });
-    souls = initialSoulSpots.map((spot) => spot.soul);
+    souls = souls.concat(await addSoulsFromMap(exampleBGMap));
+    souls = souls.concat(await addSoulsFromMap(exampleGuysMap));
   } catch (error) {
     handleError(error);
   }
@@ -76,8 +73,16 @@ async function followRoute({ seed, showBodyBounds = false }) {
   function onBone() {
     // addBones({ bones: [cloneDeep(prob.pick(flatSkeleton))] });
   }
-}
 
+  async function addSoulsFromMap(soulDefMap: SoulDefMap): Promise<Soul[]> {
+    let initialSoulSpots: SoulSpot[] = await createSoulsInSpots(soulDefMap);
+    console.log('Initial soul spots', initialSoulSpots);
+    // It's not a good idea to hold onto initialSoulSpots because the souls
+    // will move to other positions. Check soul.body for current posiions.
+    addSouls({ soulSpots: initialSoulSpots });
+    return initialSoulSpots.map((spot) => spot.soul);
+  }
+}
 function reportTopLevelError(msg, url, lineNo, columnNo, error) {
   handleError(error);
 }
