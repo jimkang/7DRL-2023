@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Wonk demo</title>
+  <link rel="stylesheet" href="app.css" />
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+
+<body>
+  <div id="status-message" class="hidden"></div>
+
+  <h1 class="title">Wonk demo</h1>
+
+  <svg id="canvas" width="3200" height="3200">
+    <g id="zoom-layer">
+      <g id="bg-layer"></g>
+      <g id="bone-root"></g>
+      <g id="wall-root"></g>
+      <g id="diagnostics-root"></g>
+    </g>
+  </svg>
+
+  <div class="control-pane">
+    <button id="reset-button">Reset</button>
+    <button id="bone-button">Throw Bone</button>
+  </div>
+
+  <div id="version-info"></div>
+
+  <script src="index.js"></script>
+</body>
+
+</html>
