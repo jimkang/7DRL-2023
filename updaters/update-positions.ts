@@ -1,11 +1,7 @@
 import { Engine, Body, Composite } from 'matter-js';
 import { SoulSpot } from '../types';
 
-export function UpdatePositions({
-  fps = 60,
-}: {
-  fps?: number;
-}) {
+export function UpdatePositions({ fps = 60 }: { fps?: number }) {
   var engine = Engine.create({ gravity: { x: 0, y: 0, scale: 0 } });
 
   return { updatePositions, addSouls };
@@ -36,6 +32,11 @@ export function UpdatePositions({
           {
             vertices: spot.soul.vertices,
             position: spot.pos,
+            collisionFilter: {
+              group: spot.soul.collisionGroup,
+              category: spot.soul.collisionCategory,
+              mask: spot.soul.collisionMask,
+            },
           },
           bodyOpts
         )

@@ -3,9 +3,9 @@ import { SoulDef } from '../types';
 export let tealTileDef: SoulDef = {
   tags: ['bg'],
   kind: 'tile',
-  collisionMask: -1,
-  collisionCategory: 1,
-  collisionGroup: 0,
+  collisionMask: 0,
+  collisionCategory: 0x0,
+  collisionGroup: -1,
   svgSrcForDirections: {
     default: 'teal-tile.svg',
   },

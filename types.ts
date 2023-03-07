@@ -55,9 +55,10 @@ export interface SoulBase {
   kind: string;
   tags: string[];
   // actionSet
-  collisionMask: number;
-  collisionCategory: number;
-  collisionGroup: number;
+  //collisionTag: string;
+  collisionMask?: number;
+  collisionCategory?: number;
+  collisionGroup?: number;
   vertices: Pt[];
   verticesBox: Box;
   svgScale?: number;

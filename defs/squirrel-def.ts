@@ -1,9 +1,10 @@
 import { SoulDef } from '../types';
+
 export let squirrelDef: SoulDef = {
   tags: ['guy'],
   kind: 'squirrel',
-  collisionMask: -1,
-  collisionCategory: 1,
+  collisionMask: 0x1,
+  collisionCategory: 0x1,
   collisionGroup: 1,
   svgSrcForDirections: {
     default: 'squirrel-facing-right.svg',
