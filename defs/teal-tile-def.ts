@@ -10,6 +10,7 @@ export let tealTileDef: SoulDef = {
     default: 'teal-tile.svg',
   },
   svgScale: 4.0,
+  verticesScale: 4,
   layer: 'bg',
   verticesBox: { x: 0, y: 0, width: 64, height: 64 },
   vertices: [

@@ -9,8 +9,15 @@ export let squirrelDef: SoulDef = {
   svgSrcForDirections: {
     default: 'squirrel-facing-right.svg',
   },
+  svgScale: 0.25,
+  verticesScale: 0.25,
   layer: 'guys',
-  verticesBox: { x: 0, y: 0, width: 500, height: 130 },
+  verticesBox: {
+    x: 0,
+    y: 0,
+    width: 493,
+    height: 158,
+  },
   vertices: [
     {
       x: 28,

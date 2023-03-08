@@ -27,10 +27,16 @@ export function UpdatePositions({ fps = 60 }: { fps?: number }) {
     };
 
     if (spot.soul.vertices) {
+      let scaledVertices = isNaN(spot.soul.verticesScale)
+        ? spot.soul.vertices
+        : spot.soul.vertices.map((vertex) => ({
+          x: vertex.x * spot.soul.verticesScale,
+          y: vertex.y * spot.soul.verticesScale,
+        }));
       spot.soul.body = Body.create(
         Object.assign(
           {
-            vertices: spot.soul.vertices,
+            vertices: scaledVertices,
             position: spot.pos,
             collisionFilter: {
               group: spot.soul.collisionGroup,

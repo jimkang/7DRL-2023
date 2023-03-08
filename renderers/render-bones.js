@@ -74,7 +74,9 @@ export function renderBones({ souls, showBodyBounds, depictionRootSelector }) {
 
 function renderBounds({ bodies }) {
   var edges = bodies.map((body) => verticesToEdges(body.vertices)).flat();
+  console.log('edges count', edges.length);
   var lines = diagnosticsRoot.selectAll('line').data(edges);
+  console.log('lines count', lines.size(), 'enter', lines.enter().size());
   lines.exit().remove();
   lines
     .enter()

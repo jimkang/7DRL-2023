@@ -7,8 +7,8 @@ export var exampleGuysMap: SoulDefMap = range(10)
     range(10).map((j) => ({
       def: squirrelDef,
       pos: {
-        x: (i + 0.5) * squirrelDef.verticesBox.width,
-        y: (j + 0.5) * squirrelDef.verticesBox.height,
+        x: 0, //(i + 0.5) * squirrelDef.verticesBox.width,
+        y: 0, //(j + 0.5) * squirrelDef.verticesBox.height,
       },
     }))
   )
