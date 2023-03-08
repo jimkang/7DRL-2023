@@ -6,6 +6,7 @@ import wireControls from './renderers/wire-controls';
 import RandomId from '@jimkang/randomid';
 // import { createProbable as Probable } from 'probable';
 import { renderBones } from './renderers/render-bones';
+import { renderPhysicsDiagnostics } from './renderers/render-diagnostics';
 import { UpdatePositions } from './updaters/update-positions';
 import { SoulMaker } from './souls';
 import { Soul, SoulSpot, SoulDefMap } from './types';
@@ -58,13 +59,15 @@ async function followRoute({ seed, showBodyBounds = false }) {
   function loop() {
     updatePositions();
     ['bg', 'guys'].forEach(renderSoulsOnLayer);
+    if (showBodyBounds) {
+      renderPhysicsDiagnostics({ souls });
+    }
     requestAnimationFrame(loop);
   }
 
   function renderSoulsOnLayer(layer) {
     renderBones({
       souls: souls.filter((soul) => soul.layer === layer),
-      showBodyBounds,
       depictionRootSelector: `#${layer}-root`,
     });
   }
@@ -83,6 +86,7 @@ async function followRoute({ seed, showBodyBounds = false }) {
     return initialSoulSpots.map((spot) => spot.soul);
   }
 }
+
 function reportTopLevelError(msg, url, lineNo, columnNo, error) {
   handleError(error);
 }
