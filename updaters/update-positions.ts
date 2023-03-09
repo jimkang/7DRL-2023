@@ -18,7 +18,7 @@ export function UpdatePositions({ fps = 60 }: { fps?: number }) {
 
   function createBodyForSoul(spot: SoulSpot) {
     var bodyOpts = {
-      angle: 0,
+      angle: spot.soul.rotation ? spot.soul.rotation : 0,
       label: spot.soul.id,
       restitution: 1.25,
       slop: 16,

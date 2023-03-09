@@ -44,7 +44,7 @@ async function followRoute({ seed, showBodyBounds = false }) {
 
   try {
     souls = souls.concat(await addSoulsFromMap(exampleBGMap));
-    //souls = souls.concat(await addSoulsFromMap(exampleGuysMap));
+    souls = souls.concat(await addSoulsFromMap(exampleGuysMap));
   } catch (error) {
     handleError(error);
   }

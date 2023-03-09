@@ -13,8 +13,8 @@ export let squirrelDef: SoulDef = {
   verticesScale: 0.25,
   layer: 'guys',
   verticesBox: {
-    x: 0,
-    y: 0,
+    x: 15,
+    y: 5,
     width: 493,
     height: 158,
   },

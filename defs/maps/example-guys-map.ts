@@ -2,9 +2,9 @@ import { SoulDefMap } from '../../types';
 import { squirrelDef } from '../squirrel-def';
 import { range } from 'd3-array';
 
-export var exampleGuysMap: SoulDefMap = range(10)
+export var exampleGuysMap: SoulDefMap = range(3)
   .map((i) =>
-    range(10).map((j) => ({
+    range(1).map((j) => ({
       def: squirrelDef,
       pos: {
         x: 0, //(i + 0.5) * squirrelDef.verticesBox.width,

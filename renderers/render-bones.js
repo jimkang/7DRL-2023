@@ -27,31 +27,28 @@ export function renderBones({ souls, depictionRootSelector }) {
     .attr('class', (soul) => `depiction ${soul.id}`);
   newDepictions.each(appendPaths);
 
-  newDepictions
-    .merge(depictions)
-    //.attr('transform-origin', getTransformOrigin)
-    .attr('transform', getTransform);
+  newDepictions.merge(depictions).attr('transform', getTransform);
 
   function getTransform(soul) {
+    const scale = isNaN(soul.svgScale) ? 1.0 : soul.svgScale;
     const angleDegrees = (soul.body.angle / (2 * Math.PI)) * 360;
-    //if (body.label === 'back-bone') {
-    //console.log('bbox', bbox);
-    //}
-
     // body.position is the center of the body.
     // Additionally, you can't assume that the vertices and
     // the svg share the same center.
     // Everything that goes into the translate command has to be pre-rotation.
-    // Find the where the corner of the body would be if it weren't rotated.
-    const bodyCornerX = soul.body.position.x - soul.verticesBox.width / 2;
-    const bodyCornerY = soul.body.position.y - soul.verticesBox.height / 2;
+    // Find the where the corner of the body would be if it weren't rotated,
+    // making sure scale is accounted for.
+    const bodyCornerX =
+      soul.body.position.x - (soul.verticesBox.width / 2) * scale;
+    const bodyCornerY =
+      soul.body.position.y - (soul.verticesBox.height / 2) * scale;
     // Find where the representation's corner should be by using verticesOffset
-    // and the body's corner.
+    // and the body's corner, then compensating for the scaling: Move to the scaled corner.
     const translateString = `translate(${bodyCornerX - soul.verticesBox.x}, ${
       bodyCornerY - soul.verticesBox.y
     })`;
     const rotationString = `rotate(${angleDegrees}, ${soul.body.position.x}, ${soul.body.position.y})`;
-    const scaleString = isNaN(soul.svgScale) ? '' : `scale(${soul.svgScale})`;
+    const scaleString = `scale(${scale})`;
     // The last command in the transform string goes first. Scale, then translate to the
     // destination, then rotate.
     return `${rotationString} ${translateString} ${scaleString}`;

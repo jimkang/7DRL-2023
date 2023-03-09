@@ -38,7 +38,7 @@ function renderBodyCenters({ bodies }) {
   dots
     .enter()
     .append('circle')
-    .attr('r', 10)
+    .attr('r', 4)
     .attr('fill', getBodyColor)
     .merge(dots)
     .attr('cx', (body) => body.position.x)
