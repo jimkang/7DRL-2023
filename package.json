@@ -1,7 +1,7 @@
 {
   "name": "7DRL-2023",
-  "version": "1.0.8",
-  "description": "Flooding-driven audio piece",
+  "version": "1.0.0",
+  "description": "7DRL attempt",
   "main": "index.js",
   "pri7DRL-2023e": true,
   "scripts": {

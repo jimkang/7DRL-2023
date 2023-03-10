@@ -26,24 +26,27 @@ export function SoulMaker({ seed }) {
     }
 
     var soul = {
-      ...cloneDeep(def) as SoulDef,
+      ...(cloneDeep(def) as SoulDef),
       id: `${def.kind}-${randomId(4)}`,
       svgsForDirections,
       body: null,
       destination: { x: 0, y: 0 },
-      holdings: []
+      holdings: [],
+      actions: [],
     };
     return soul;
   }
 
-  async function createSoulsInSpots(defSpots: SoulDefSpot[]): Promise<SoulSpot[]> {
+  async function createSoulsInSpots(
+    defSpots: SoulDefSpot[]
+  ): Promise<SoulSpot[]> {
     return await Promise.all(defSpots.map(createSoulInSpot));
   }
 
   async function createSoulInSpot(defSpot: SoulDefSpot): Promise<SoulSpot> {
     var soulSpot: SoulSpot = {
       pos: defSpot.pos,
-      soul: await createFromDef(defSpot.def)
+      soul: await createFromDef(defSpot.def),
     };
     return soulSpot;
   }

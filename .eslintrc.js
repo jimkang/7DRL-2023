@@ -2,7 +2,7 @@ module.exports = {
   env: {
     browser: true,
     commonjs: true,
-    es6: true
+    es6: true,
   },
   extends: 'eslint:recommended',
   rules: {
@@ -13,7 +13,7 @@ module.exports = {
     'no-console': 'off',
   },
   parserOptions: {
-    sourceType: 'module'
+    sourceType: 'module',
   },
   overrides: [
     {
@@ -21,17 +21,18 @@ module.exports = {
       plugins: ['@typescript-eslint/eslint-plugin'],
       parser: '@typescript-eslint/parser',
       parserOptions: {
-        project: './tsconfig.json'
+        project: './tsconfig.json',
       },
       extends: ['plugin:@typescript-eslint/recommended', 'eslint:recommended'],
       rules: {
         'no-var': 'off',
+        '@typescript-eslint/no-unused-vars': 'off',
         '@typescript-eslint/no-var-requires': 'off',
         '@typescript-eslint/no-use-before-define': 'off',
         '@typescript-eslint/explicit-function-return-type': 'off',
         'prefer-const': 'off',
-        '@typescript-eslint/camelcase': 'off'
-      }
-    }
-  ]
+        '@typescript-eslint/camelcase': 'off',
+      },
+    },
+  ],
 };

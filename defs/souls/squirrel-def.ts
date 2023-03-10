@@ -1,4 +1,4 @@
-import { SoulDef } from '../types';
+import { SoulDef } from '../../types';
 
 export let squirrelDef: SoulDef = {
   tags: ['guy'],

@@ -1,5 +1,5 @@
 import { SoulDefMap } from '../../types';
-import { tealTileDef } from '../teal-tile-def';
+import { tealTileDef } from '../souls/teal-tile-def';
 import { range } from 'd3-array';
 
 export var exampleBGMap: SoulDefMap = range(10)

@@ -1,14 +1,18 @@
 import { SoulDefMap } from '../../types';
-import { squirrelDef } from '../squirrel-def';
+import { squirrelDef } from '../souls/squirrel-def';
 import { range } from 'd3-array';
 
 export var exampleGuysMap: SoulDefMap = range(3)
   .map((i) =>
-    range(1).map((j) => ({
+    range(3).map((j) => ({
       def: squirrelDef,
       pos: {
-        x: 0, //(i + 0.5) * squirrelDef.verticesBox.width,
-        y: 0, //(j + 0.5) * squirrelDef.verticesBox.height,
+        x:
+          (i + 0.5) * squirrelDef.verticesBox.width * squirrelDef.verticesScale,
+        y:
+          (j + 0.5) *
+          squirrelDef.verticesBox.height *
+          squirrelDef.verticesScale,
       },
     }))
   )

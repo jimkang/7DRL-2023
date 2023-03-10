@@ -15,10 +15,10 @@ function renderBounds({ bodies }) {
   var edges = bodies
     .map((body) => verticesToEdges(body.id, body.vertices))
     .flat();
-  console.log(
-    'body ids for edges',
-    edges.map((edge) => edge.bodyId)
-  );
+  //console.log(
+  //'body ids for edges',
+  //edges.map((edge) => edge.bodyId)
+  //);
   var lines = diagnosticsRoot.selectAll('line').data(edges, (edge) => edge.id);
   lines.exit().remove();
   lines

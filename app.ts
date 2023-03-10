@@ -2,16 +2,17 @@ import RouteState from 'route-state';
 import handleError from 'handle-error-web';
 import { version } from './package.json';
 import wireControls from './renderers/wire-controls';
-// import seedrandom from 'seedrandom';
 import RandomId from '@jimkang/randomid';
-// import { createProbable as Probable } from 'probable';
+import seedrandom from 'seedrandom';
+import { createProbable as Probable } from 'probable';
 import { renderBones } from './renderers/render-bones';
 import { renderPhysicsDiagnostics } from './renderers/render-diagnostics';
 import { UpdatePositions } from './updaters/update-positions';
 import { SoulMaker } from './souls';
-import { Soul, SoulSpot, SoulDefMap } from './types';
+import { Soul, SoulSpot, SoulDefMap, Action } from './types';
 import { exampleBGMap } from './defs/maps/example-bg-map';
 import { exampleGuysMap } from './defs/maps/example-guys-map';
+import { CreateMove } from './defs/actions/move-def';
 
 var randomId = RandomId();
 var routeState;
@@ -35,10 +36,11 @@ async function followRoute({ seed, showBodyBounds = false }) {
     return;
   }
 
-  // var random = seedrandom(seed);
-  // prob = Probable({ random });
+  var random = seedrandom(seed);
+  var prob = Probable({ random });
   var { createSoulsInSpots } = SoulMaker({ seed });
   var { updatePositions, addSouls } = UpdatePositions({});
+  var createMove = CreateMove({ seed });
 
   var souls: Soul[] = [];
 
@@ -55,6 +57,22 @@ async function followRoute({ seed, showBodyBounds = false }) {
   });
 
   loop();
+
+  // Test out move action.
+  (async function moveSquirrel() {
+    var squirrel = prob.pick(souls.filter((soul) => soul.kind === 'squirrel'));
+    if (!squirrel) {
+      return;
+    }
+    var move: Action = createMove({
+      actors: [squirrel],
+      direction: { x: (prob.roll(3) - 1) * 8, y: (prob.roll(3) - 1) * 8 },
+    });
+    await move.cmd.fn(
+      Object.assign({ existingSouls: souls }, move.cmd.curriedParams)
+    );
+    setTimeout(moveSquirrel, 1000);
+  })();
 
   function loop() {
     updatePositions();

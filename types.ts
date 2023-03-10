@@ -78,6 +78,7 @@ export interface Soul extends SoulBase {
   body: Body;
   destination: Pt;
   holdings: Soul[];
+  actions: Action[];
 }
 
 export interface SoulDefSpot {
@@ -91,3 +92,25 @@ export interface SoulSpot {
   pos: Pt;
   soul: Soul;
 }
+
+export interface Action {
+  name: string;
+  id: string;
+  cmd: ActionCmd;
+}
+
+export interface ActionParams {
+  name: string; // Is this needed?
+  id: string;
+  actors: Soul[];
+  existingSouls: Soul[];
+  also;
+}
+
+export interface ActionCmd {
+  fn: ActionFn;
+  curriedParams: Partial<ActionParams>;
+}
+
+// eslint-disable-next-line no-unused-vars
+export type ActionFn = (ActionParams) => Promise<void>;
