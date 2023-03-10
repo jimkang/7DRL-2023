@@ -63,6 +63,7 @@ export interface SoulBase {
   verticesBox: Box;
   svgScale?: number;
   verticesScale?: number;
+  slop?: number;
   rotation?: number;
   layer: string;
 }

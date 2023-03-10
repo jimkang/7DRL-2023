@@ -21,7 +21,7 @@ export function UpdatePositions({ fps = 60 }: { fps?: number }) {
       angle: spot.soul.rotation ? spot.soul.rotation : 0,
       label: spot.soul.id,
       restitution: 1.25,
-      slop: 16,
+      slop: spot.soul.slop || 16,
       density: 1,
       force: { x: 0, y: 0 },
     };
@@ -37,7 +37,10 @@ export function UpdatePositions({ fps = 60 }: { fps?: number }) {
         Object.assign(
           {
             vertices: scaledVertices,
-            position: spot.pos,
+            position: {
+              x: spot.pos.x - spot.soul.verticesBox.x / spot.soul.verticesScale,
+              y: spot.pos.y - spot.soul.verticesBox.y / spot.soul.verticesScale,
+            },
             collisionFilter: {
               group: spot.soul.collisionGroup,
               category: spot.soul.collisionCategory,

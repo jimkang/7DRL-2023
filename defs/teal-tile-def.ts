@@ -4,7 +4,7 @@ export let tealTileDef: SoulDef = {
   tags: ['bg'],
   kind: 'tile',
   collisionMask: 0,
-  collisionCategory: 0x0,
+  collisionCategory: 0,
   collisionGroup: -1,
   svgSrcForDirections: {
     default: 'teal-tile.svg',
