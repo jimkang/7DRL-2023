@@ -39,7 +39,7 @@ async function followRoute({ seed, showBodyBounds = false }) {
   var random = seedrandom(seed);
   var prob = Probable({ random });
   var { createSoulsInSpots } = SoulMaker({ seed });
-  var { updatePositions, addSouls } = UpdatePositions({});
+  var { updatePositions, addSouls } = UpdatePositions({ fps: 60 });
   var createMove = CreateMove({ seed });
 
   var souls: Soul[] = [];
@@ -60,12 +60,15 @@ async function followRoute({ seed, showBodyBounds = false }) {
 
   // Test out move action.
   (async function moveSquirrel() {
-    var squirrel = prob.pick(souls.filter((soul) => soul.kind === 'squirrel'));
-    if (!squirrel) {
+    //var squirrel = prob.pick(souls.filter((soul) => soul.kind === 'squirrel'));
+    var squirrels = souls.filter(
+      (soul) => soul.kind === 'squirrel' && prob.roll(2) === 0
+    );
+    if (squirrels.length < 1) {
       return;
     }
     var move: Action = createMove({
-      actors: [squirrel],
+      actors: squirrels,
       direction: { x: (prob.roll(3) - 1) * 8, y: (prob.roll(3) - 1) * 8 },
     });
     await move.cmd.fn(

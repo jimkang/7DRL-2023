@@ -4,7 +4,7 @@ import { range } from 'd3-array';
 
 export var exampleGuysMap: SoulDefMap = range(3)
   .map((i) =>
-    range(3).map((j) => ({
+    range(4).map((j) => ({
       def: squirrelDef,
       pos: {
         x:
