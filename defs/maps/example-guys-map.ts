@@ -1,6 +1,7 @@
 import { SoulDefMap } from '../../types';
 import { squirrelDef } from '../souls/squirrel-def';
 import { range } from 'd3-array';
+import { robedOneDef } from '../souls/robed-one-def';
 
 export var exampleGuysMap: SoulDefMap = range(3)
   .map((i) =>
@@ -17,3 +18,11 @@ export var exampleGuysMap: SoulDefMap = range(3)
     }))
   )
   .flat();
+
+exampleGuysMap.push({
+  def: robedOneDef,
+  pos: {
+    x: 16,
+    y: 16
+  }
+});
