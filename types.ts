@@ -112,5 +112,10 @@ export interface ActionCmd {
   curriedParams: Partial<ActionParams>;
 }
 
+export interface QueueCmd {
+  cmd: ActionCmd;
+  initiative: number;
+}
+
 // eslint-disable-next-line no-unused-vars
 export type ActionFn = (ActionParams) => Promise<void>;

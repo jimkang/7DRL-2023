@@ -13,6 +13,7 @@ import { Soul, SoulSpot, SoulDefMap, Action } from './types';
 import { exampleBGMap } from './defs/maps/example-bg-map';
 import { exampleGuysMap } from './defs/maps/example-guys-map';
 import { CreateMove } from './defs/actions/move-def';
+import { ActionTicker } from './updaters/action-ticker';
 
 var randomId = RandomId();
 var routeState;
@@ -41,6 +42,7 @@ async function followRoute({ seed, showBodyBounds = false }) {
   var { createSoulsInSpots } = SoulMaker({ seed });
   var { updatePositions, addSouls } = UpdatePositions({ fps: 60 });
   var createMove = CreateMove({ seed });
+  var actionTicker = ActionTicker({ cmdLengthSeconds: 1 });
 
   var souls: Soul[] = [];
 
@@ -64,6 +66,7 @@ async function followRoute({ seed, showBodyBounds = false }) {
     var squirrels = souls.filter(
       (soul) => soul.kind === 'squirrel' && prob.roll(2) === 0
     );
+    var robeGuy = souls.find((soul) => soul.kind === 'robed-one');
     if (squirrels.length < 1) {
       return;
     }
@@ -71,10 +74,16 @@ async function followRoute({ seed, showBodyBounds = false }) {
       actors: squirrels,
       direction: { x: (prob.roll(3) - 1) * 8, y: (prob.roll(3) - 1) * 8 },
     });
-    await move.cmd.fn(
-      Object.assign({ existingSouls: souls }, move.cmd.curriedParams)
-    );
-    setTimeout(moveSquirrel, 1000);
+    var moveRobeGuy: Action = createMove({
+      actors: [robeGuy],
+      direction: { x: 1, y: 1 },
+    });
+
+    actionTicker.addCommand({ cmd: move.cmd, initiative: 1 });
+    actionTicker.addCommand({ cmd: moveRobeGuy.cmd, initiative: 1.5 });
+    await actionTicker.runCommands({ existingSouls: souls });
+
+    setTimeout(moveSquirrel, 2000);
   })();
 
   function loop() {
