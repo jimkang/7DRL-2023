@@ -64,7 +64,7 @@ export interface SoulBase {
   kind: string;
   tags: string[];
   // eslint-disable-next-line no-unused-vars
-  pickActions?: (self: Soul, addCommand: (queueCmd: QueueCmd) => void) => void;
+  pickActions?: ({ self, addCommand, prob }: { self: Soul, addCommand: (queueCmd: QueueCmd) => void, prob }) => void;
   // actionSet
   //collisionTag: string;
   collisionMask?: number;

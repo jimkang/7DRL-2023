@@ -9,7 +9,7 @@ import { renderBones } from './renderers/render-bones';
 import { renderPhysicsDiagnostics } from './renderers/render-diagnostics';
 import { UpdatePositions } from './updaters/update-positions';
 import { SoulMaker } from './souls';
-import { Soul, SoulSpot, SoulDefMap, Action } from './types';
+import { Soul, SoulSpot, SoulDefMap } from './types';
 import { exampleBGMap } from './defs/maps/example-bg-map';
 import { exampleGuysMap } from './defs/maps/example-guys-map';
 import { ActionTicker } from './updaters/action-ticker';
@@ -43,7 +43,7 @@ async function followRoute({ seed, showBodyBounds = false }) {
   var { updatePositions, addSouls } = UpdatePositions({ fps: 60 });
   // var createMove = CreateMove({ seed });
   var actionTicker = ActionTicker({ cmdLengthSeconds: 1 });
-  var turnTicker = TurnTicker({ addActionCommand: actionTicker.addCommand });
+  var turnTicker = TurnTicker({ addActionCommand: actionTicker.addCommand, prob });
 
   var souls: Soul[] = [];
 
@@ -63,11 +63,20 @@ async function followRoute({ seed, showBodyBounds = false }) {
 
   (async function doATurnIteration() {
     var robeGuy = souls.find((soul) => soul.kind === 'robed-one');
+    var squirrels = souls.filter(
+      (soul) => soul.kind === 'squirrel'
+    );
+
     turnTicker.registerTurnTaker({
       callback: robeGuy.pickActions,
       params: { self: robeGuy },
-      initiative: 1,
+      initiative: 0,
     });
+    squirrels.forEach((squirrel, i) => turnTicker.registerTurnTaker({
+      callback: squirrel.pickActions,
+      params: { self: squirrel },
+      initiative: i
+    }));
 
     turnTicker.runTurn();
     // TODO: Should turnTicker just gather actions instead of having souls queue them directly?

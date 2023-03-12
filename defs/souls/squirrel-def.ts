@@ -1,8 +1,16 @@
-import { SoulDef } from '../../types';
+import { Action, Soul, SoulDef } from '../../types';
+import { createMove } from '../actions/move-def';
 
 export let squirrelDef: SoulDef = {
   tags: ['guy'],
   kind: 'squirrel',
+  pickActions({ self, addCommand, prob }: { self: Soul; addCommand, prob }) {
+    var moveSquirrel: Action = createMove({
+      actors: [self],
+      direction: { x: prob.roll(2) - 1, y: prob.roll(2) - 1 },
+    });
+    addCommand({ cmd: moveSquirrel.cmd, initiative: prob.roll(10) });
+  },
   collisionMask: -1,
   collisionCategory: 1,
   collisionGroup: 1,

@@ -3,7 +3,7 @@ import groupBy from 'lodash.groupby';
 import { compareQueueItems } from '../util/compare-queue-items';
 
 // A turn is when actions are selected, but not when they're executed.
-export function TurnTicker({ addActionCommand }) {
+export function TurnTicker({ addActionCommand, prob }) {
   var callbackQueue: QueueCallback[] = [];
 
   return {
@@ -27,8 +27,8 @@ export function TurnTicker({ addActionCommand }) {
         group.map((queueCallback) =>
           queueCallback.callback(
             Object.assign(
-              { addCommand: addActionCommand },
-              queueCallback.params || {}
+              { addCommand: addActionCommand, prob },
+              queueCallback.params || {},
             )
           )
         );
