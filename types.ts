@@ -51,9 +51,20 @@ export interface BoxSize {
 }
 export type Box = Pt & BoxSize;
 
+export interface QueueItem {
+  initiative: number;
+}
+
+export interface QueueCallback extends QueueItem {
+  callback;
+  params?;
+}
+
 export interface SoulBase {
   kind: string;
   tags: string[];
+  // eslint-disable-next-line no-unused-vars
+  pickActions?: (self: Soul, addCommand: (queueCmd: QueueCmd) => void) => void;
   // actionSet
   //collisionTag: string;
   collisionMask?: number;
@@ -104,18 +115,18 @@ export interface ActionParams {
   id: string;
   actors: Soul[];
   existingSouls: Soul[];
-  also;
+  also?;
 }
 
 export interface ActionCmd {
   fn: ActionFn;
-  curriedParams: Partial<ActionParams>;
+  actors: Soul[];
+  also?;
 }
 
-export interface QueueCmd {
+export interface QueueCmd extends QueueItem {
   cmd: ActionCmd;
-  initiative: number;
 }
 
 // eslint-disable-next-line no-unused-vars
-export type ActionFn = (ActionParams) => Promise<void>;
+export type ActionFn = (actionParams: ActionParams) => Promise<void>;

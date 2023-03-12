@@ -12,8 +12,8 @@ import { SoulMaker } from './souls';
 import { Soul, SoulSpot, SoulDefMap, Action } from './types';
 import { exampleBGMap } from './defs/maps/example-bg-map';
 import { exampleGuysMap } from './defs/maps/example-guys-map';
-import { CreateMove } from './defs/actions/move-def';
 import { ActionTicker } from './updaters/action-ticker';
+import { TurnTicker } from './updaters/turn-ticker';
 
 var randomId = RandomId();
 var routeState;
@@ -41,8 +41,9 @@ async function followRoute({ seed, showBodyBounds = false }) {
   var prob = Probable({ random });
   var { createSoulsInSpots } = SoulMaker({ seed });
   var { updatePositions, addSouls } = UpdatePositions({ fps: 60 });
-  var createMove = CreateMove({ seed });
+  // var createMove = CreateMove({ seed });
   var actionTicker = ActionTicker({ cmdLengthSeconds: 1 });
+  var turnTicker = TurnTicker({ addActionCommand: actionTicker.addCommand });
 
   var souls: Soul[] = [];
 
@@ -60,31 +61,46 @@ async function followRoute({ seed, showBodyBounds = false }) {
 
   loop();
 
-  // Test out move action.
-  (async function moveSquirrel() {
-    //var squirrel = prob.pick(souls.filter((soul) => soul.kind === 'squirrel'));
-    var squirrels = souls.filter(
-      (soul) => soul.kind === 'squirrel' && prob.roll(2) === 0
-    );
+  (async function doATurnIteration() {
     var robeGuy = souls.find((soul) => soul.kind === 'robed-one');
-    if (squirrels.length < 1) {
-      return;
-    }
-    var move: Action = createMove({
-      actors: squirrels,
-      direction: { x: (prob.roll(3) - 1) * 8, y: (prob.roll(3) - 1) * 8 },
-    });
-    var moveRobeGuy: Action = createMove({
-      actors: [robeGuy],
-      direction: { x: 1, y: 1 },
+    turnTicker.registerTurnTaker({
+      callback: robeGuy.pickActions,
+      params: { self: robeGuy },
+      initiative: 1,
     });
 
-    actionTicker.addCommand({ cmd: move.cmd, initiative: 1 });
-    actionTicker.addCommand({ cmd: moveRobeGuy.cmd, initiative: 1.5 });
+    turnTicker.runTurn();
+    // TODO: Should turnTicker just gather actions instead of having souls queue them directly?
+
     await actionTicker.runCommands({ existingSouls: souls });
-
-    setTimeout(moveSquirrel, 2000);
+    setTimeout(doATurnIteration, 3000);
   })();
+
+  // // Test out move action.
+  // (async function moveSquirrel() {
+  //   //var squirrel = prob.pick(souls.filter((soul) => soul.kind === 'squirrel'));
+  //   var squirrels = souls.filter(
+  //     (soul) => soul.kind === 'squirrel' && prob.roll(2) === 0
+  //   );
+  //   var robeGuy = souls.find((soul) => soul.kind === 'robed-one');
+  //   if (squirrels.length < 1) {
+  //     return;
+  //   }
+  //   var move: Action = createMove({
+  //     actors: squirrels,
+  //     direction: { x: (prob.roll(3) - 1) * 8, y: (prob.roll(3) - 1) * 8 },
+  //   });
+  //   var moveRobeGuy: Action = createMove({
+  //     actors: [robeGuy],
+  //     direction: { x: 1, y: 1 },
+  //   });
+
+  //   actionTicker.addCommand({ cmd: move.cmd, initiative: 1 });
+  //   actionTicker.addCommand({ cmd: moveRobeGuy.cmd, initiative: 1.5 });
+  //   await actionTicker.runCommands({ existingSouls: souls });
+
+  //   setTimeout(moveSquirrel, 2000);
+  // })();
 
   function loop() {
     updatePositions();

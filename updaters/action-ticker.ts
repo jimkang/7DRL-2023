@@ -1,5 +1,6 @@
 import { QueueCmd, Soul } from '../types';
 import groupBy from 'lodash.groupby';
+import { compareQueueItems } from '../util/compare-queue-items';
 
 export function ActionTicker({
   cmdLengthSeconds = 1,
@@ -25,7 +26,7 @@ export function ActionTicker({
   async function runCommands({ existingSouls }: { existingSouls: Soul[] }) {
     try {
       var cmdGroups: Record<number, QueueCmd[]> = groupBy(
-        cmdQueue.sort(compareQueueCmd),
+        cmdQueue.sort(compareQueueItems),
         (qc) => qc.initiative
       );
       for (let initKey in cmdGroups) {
@@ -36,7 +37,15 @@ export function ActionTicker({
           [stall(cmdLengthSeconds)].concat(
             group.map((queueCmd) =>
               queueCmd.cmd.fn(
-                Object.assign({ existingSouls }, queueCmd.cmd.curriedParams)
+                Object.assign(
+                  {
+                    name: 'todo',
+                    id: 'todo',
+                    existingSouls,
+                    actors: queueCmd.cmd.actors,
+                  },
+                  { also: queueCmd.cmd.also }
+                )
               )
             )
           )
@@ -50,10 +59,6 @@ export function ActionTicker({
       cmdQueue.length = 0;
     }
   }
-}
-
-function compareQueueCmd(a: QueueCmd, b: QueueCmd) {
-  return a.initiative < b.initiative ? -1 : 1;
 }
 
 function stall(seconds: number): Promise<void> {

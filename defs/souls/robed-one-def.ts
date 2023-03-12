@@ -1,8 +1,16 @@
-import { SoulDef } from '../../types';
+import { Action, Soul, SoulDef } from '../../types';
+import { createMove } from '../actions/move-def';
 
 export let robedOneDef: SoulDef = {
   tags: ['guy'],
   kind: 'robed-one',
+  pickActions({ self, addCommand }: { self: Soul; addCommand }) {
+    var moveRobeGuy: Action = createMove({
+      actors: [self],
+      direction: { x: 1, y: 1 },
+    });
+    addCommand({ cmd: moveRobeGuy.cmd, initiative: 1 });
+  },
   collisionMask: -1,
   collisionCategory: 1,
   collisionGroup: 1,

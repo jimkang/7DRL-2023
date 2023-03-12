@@ -1,30 +1,22 @@
 import { Action, ActionParams, Soul, Pt } from '../../types';
 import { Body } from 'matter-js';
 
-export function CreateMove({ seed }) {
-  return createMove;
-
-  function createMove({
-    actors,
-    direction,
-  }: {
-    actors: Soul[];
-    direction: Pt;
-  }): Action {
-    return {
-      name: 'move',
-      id: 'todo',
-      cmd: {
-        curriedParams: {
-          actors,
-          name: 'move',
-          id: 'todo',
-          also: { direction },
-        },
-        fn: runMove,
-      },
-    };
-  }
+export function createMove({
+  actors,
+  direction,
+}: {
+  actors: Soul[];
+  direction: Pt;
+}): Action {
+  return {
+    name: 'move',
+    id: 'todo',
+    cmd: {
+      actors,
+      fn: runMove,
+      also: { direction },
+    },
+  };
 }
 
 async function runMove({
